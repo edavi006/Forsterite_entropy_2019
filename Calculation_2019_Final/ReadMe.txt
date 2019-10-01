@@ -5,7 +5,7 @@ Input - Z_Shot_Record-Deep Release-FO.csv
 Output - Plot PDFs, and Release_VandP_Data.txt
 Estimated Calc Time - 45 minutes.
 
-2: Deep_release_independent_parallel,py - Calculates isentropes and associated gammas in an iterative fashion. Current set up is as in the paper, with a Gaussian formulation to calculate the release isentropes. After 300 iterations, the current monte carlo parameter set is deemed unconverging, and the perturbations are set to NaNs. Gaussian Formulations are not extremely flexible, so the NaN warning tends to show up a lot at density extremes for each pertubation step. This is part of the reason it takes so long to calculate, we still need enough usable isentropes to do statistics with.
+2: Deep_release_independent_parallel.py - Calculates isentropes and associated gammas in an iterative fashion. Current set up is as in the paper, with a Gaussian formulation to calculate the release isentropes. After 300 iterations, the current monte carlo parameter set is deemed unconverging, and the perturbations are set to NaNs. Gaussian Formulations are not extremely flexible, so the NaN warning tends to show up a lot at density extremes for each pertubation step. This is part of the reason it takes so long to calculate, we still need enough usable isentropes to do statistics with.
 Function Call - Parallel-MieGrun.py - actually performs the calculation
 Input - Release_VandP_Data.txt
 Output - Plot PDFs, P_V_E_releasePaths_gau.txt, and Gamma_Release_Data_gau.txt
