@@ -72,9 +72,9 @@ plt.rcParams['figure.figsize']=5,4
 ########Plot Parameters finish############3
 
 #some Constants
-size=1000 #array size for created arrays
-steps=10000 #array size for created arrays
-rho_init_hp=5433
+size=10000 #array size for created arrays
+steps=1000 #array size for created arrays
+rho_init_p=5433
 
 gamma_rho=2597 #Initial Liquid Volume
 
@@ -206,7 +206,7 @@ for i in range(np.size(asi_rho)):
     asi_gamma_upe[i]=-sorted_asi_gamma_mc[i,int(0.841*steps)]+asi_gamma[i] #picking out the standard deviation
     asi_gamma_lowe[i]=sorted_asi_gamma_mc[i,int(0.159*steps)]-asi_gamma[i]
 asi_gammae=[asi_gamma_upe,asi_gamma_lowe]
-#print(asi_gamma,asi_gamma_lowe,asi_gamma_upe)
+print(asi_gamma,asi_gamma_lowe,asi_gamma_upe)
 
 #plt.figure()
 #plt.hist(A,100)
@@ -252,8 +252,8 @@ gamma_fitted_std=np.std(gamma_fitted_mc, axis=1)
 
 
 #DFT data
-gamma_dft=np.loadtxt('ForsteriteHugoniot_FINAL.txt',skiprows=4,usecols=[4])
-dens_dft=np.loadtxt('ForsteriteHugoniot_FINAL.txt',skiprows=4,usecols=[0])*1000
+#gamma_dft=np.loadtxt('ForsteriteHugoniot_FINAL.txt',skiprows=4,usecols=[4])
+#dens_dft=np.loadtxt('ForsteriteHugoniot_FINAL.txt',skiprows=4,usecols=[0])*1000
 
 
 #Sarah-Kraus fit

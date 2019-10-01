@@ -665,7 +665,7 @@ plt.fill_between(P[ld:]*(10**(-9)),(T[ld:]-Te[ld:])*(10**-3),(T[ld:]+Te[ld:])*(1
 #plt.scatter(Pth*(10**(-9)),Tref*(10**-3), label='Isentrope Foot', color='black')
 plt.errorbar(Pc*(10**-9),Tc*(10**-3),yerr=Tce*(10**-3), xerr=Pce*(10**-9), fmt='o',linewidth=2, color='red',label='Isentrope-Hugoniot Intersection')
 #plt.plot(xmg4l,ymg4l,linestyle='--',label="Mg2SiO4 Liquidus", linewidth=2,alpha=0.8)
-plt.plot(mosP*(10**3),mosT*(10**-3),linestyle='--',label="Mg$_2$SiO$_4$ Liquidus, Mosenfelder et al. 2009", linewidth=2)
+#plt.plot(mosP*(10**3),mosT*(10**-3),linestyle='--',label="Mg$_2$SiO$_4$ Liquidus, Mosenfelder et al. 2009", linewidth=2)
 #plt.plot(dftP*(10**3),dftT*(10**-3),'o', label="DFT-MD Root et al. 2018", color='red')
 #####################LUO#####################################
 #plt.plot(xluo*1000,yluo/1000,'o', label="Luo et al. 2004", color='brown')
