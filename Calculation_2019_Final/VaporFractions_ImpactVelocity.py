@@ -2,11 +2,12 @@
 # Uses two Equations of State
 # They can be input in the first few lines of the code.
 
-#This case uses M-ANEOS forsterite model EOS and the Measured Forsterite Hugoniot
+#This case uses revised M-ANEOS forsterite model EOS and theMeasured Forsterite Hugoniot
 #
 #Requires input of vapor domes and hugoniots
-#This case also uses the Dunite M-ANEOS vapor dome, for both. Should another dome
-#be used at the same time, another dome would have to be defined below.'
+#
+#
+#
 
 #Monte Carlo perturbation uncertainty propagation is also performed on the
 # calculations here. 
@@ -32,7 +33,7 @@ R=8.314 # J/K/mol
 G=6.67408*10**(-11) #m^3/kg/s^2
 
 #Monte Carlo Steps
-steps=10000
+steps=100000
 #Set up classes
 
 class hugoniot: # mks
@@ -80,7 +81,7 @@ def makehugoniot(eos,up,note):
 # forsterite
 fovcfile = 'PulledHugoniots/L_VDome_STS_f.csv'
 fovc = dome()
-fovc.note='M-ANEOS Forsterite Melosh'
+fovc.note='M-ANEOS Forsterite'
 fovc.t = np.loadtxt(fovcfile,skiprows=3,usecols=[0],delimiter=',')*(10**np.loadtxt(fovcfile,skiprows=3,usecols=[1],delimiter=','))
 fovc.rl = np.loadtxt(fovcfile,skiprows=3,usecols=[2],delimiter=',')*(10**np.loadtxt(fovcfile,skiprows=3,usecols=[3],delimiter=','))
 fovc.rv = np.loadtxt(fovcfile,skiprows=3,usecols=[4],delimiter=',')*(10**np.loadtxt(fovcfile,skiprows=3,usecols=[5],delimiter=','))
@@ -89,10 +90,10 @@ fovc.sl = np.loadtxt(fovcfile,skiprows=3,usecols=[14],delimiter=',')*(10**np.loa
 fovc.sv = np.loadtxt(fovcfile,skiprows=3,usecols=[16],delimiter=',')*(10**np.loadtxt(fovcfile,skiprows=3,usecols=[17],delimiter=','))
 
 #Maneos hugoniot curves
-xm=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[2])*10**9 #pressure
-ym=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[1]) #temperature
-sm=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[5]) #entropy
-dm=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[0]) #density
+xm=np.loadtxt('PulledHugoniots/pullhugoniot.txt',delimiter=',',skiprows=3,usecols=[2])*10**9 #pressure
+ym=np.loadtxt('PulledHugoniots/pullhugoniot.txt',delimiter=',',skiprows=3,usecols=[0]) #temperature
+sm=np.loadtxt('PulledHugoniots/pullhugoniot.txt',delimiter=',',skiprows=3,usecols=[4])*1000000 #entropy
+dm=np.loadtxt('PulledHugoniots/pullhugoniot.txt',delimiter=',',skiprows=3,usecols=[1]) *1000#density
 
 ########INPUT FORSTERITE DATA#############
 zfile = 'Z_Hugoniot.txt'

@@ -1,8 +1,9 @@
-# Calculations for vapour fractions and critical impact velocities.
+# Calculations for vapour fractions and critical impact velocities at warm conditions.
 # Uses two Equations of State
 # They can be input in the first few lines of the code.
 
-#This case uses M-ANEOS forsterite model EOS and the Measured Forsterite Hugoniot
+#This case uses the revised M-ANEOS forsterite model EOS and the offset Measured Forsterite Hugoniot
+# In this case, the revised maneos forsterite model should be trusted more than the offset hugoniot
 #
 #Requires input of vapor domes and hugoniots
 #This case also uses the Dunite M-ANEOS vapor dome, for both. Should another dome
@@ -89,10 +90,10 @@ fovc.sl = np.loadtxt(fovcfile,skiprows=3,usecols=[14],delimiter=',')*(10**np.loa
 fovc.sv = np.loadtxt(fovcfile,skiprows=3,usecols=[16],delimiter=',')*(10**np.loadtxt(fovcfile,skiprows=3,usecols=[17],delimiter=','))
 
 #Maneos hugoniot curves
-xm=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[2])*10**9 #pressure
-ym=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[1]) #temperature
-sm=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[5]) #entropy
-dm=np.loadtxt('forsterite-maneos_py.txt',skiprows=5,usecols=[0]) #density
+xm=np.loadtxt('PulledHugoniots/warmForsterite_NewAneos.txt',skiprows=5,usecols=[2])*10**9 #pressure
+ym=np.loadtxt('PulledHugoniots/warmForsterite_NewAneos.txt',skiprows=5,usecols=[1]) #temperature
+sm=np.loadtxt('PulledHugoniots/warmForsterite_NewAneos.txt',skiprows=5,usecols=[5]) #entropy
+dm=np.loadtxt('PulledHugoniots/warmForsterite_NewAneos.txt',skiprows=5,usecols=[0]) #density
 
 
 #########CALC THE ENTROPY OF HEATING TO 1200k##########

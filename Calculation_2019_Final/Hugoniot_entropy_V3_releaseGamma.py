@@ -37,15 +37,48 @@ from scipy.optimize import curve_fit
 from scipy import interpolate
 from matplotlib import rc
 
+########Plot Parameters begin############3
 #These control font size in plots.
 params = {'legend.fontsize': 10,
          'axes.labelsize': 10,
          'axes.titlesize':10,
          'xtick.labelsize':10,
          'ytick.labelsize':10}
+from cycler import cycler
+plt.rcParams['axes.prop_cycle'] = cycler(color='bgrcmyk')
 plt.rcParams.update(params)
+plt.rcParams['xtick.major.size'] = 4
+plt.rcParams['xtick.major.width'] = 0.5
+plt.rcParams['xtick.minor.size'] = 2
+plt.rcParams['xtick.minor.width'] = 0.5
+plt.rcParams['ytick.major.size'] = 4
+plt.rcParams['ytick.major.width'] = 0.5
+plt.rcParams['ytick.minor.size'] = 2
+plt.rcParams['ytick.minor.width'] = 0.5
+plt.rcParams['axes.linewidth']= 1
+
+plt.rcParams['lines.linewidth'] = 1.0
+plt.rcParams['lines.dashed_pattern'] = [6, 6]
+plt.rcParams['lines.dashdot_pattern'] = [3, 5, 1, 5]
+plt.rcParams['lines.dotted_pattern'] = [1, 3]
+plt.rcParams['errorbar.capsize'] = 3
+plt.rcParams['lines.scale_dashes'] = False
+plt.rcParams['legend.fancybox'] = False
+plt.rcParams['legend.framealpha'] = None
+plt.rcParams['legend.edgecolor'] = 'inherit'
+plt.rcParams['mathtext.fontset'] = 'cm'
+plt.rcParams['xtick.direction'] = 'in'
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.top'] = True
+plt.rcParams['ytick.right'] = True
+plt.rcParams['figure.dpi'] = 100
+plt.rcParams['savefig.dpi'] = 100
+
+plt.rcParams['mathtext.rm'] = 'serif'
 plt.rcParams['font.family']='Times New Roman'
 plt.rcParams['figure.figsize']=5,4
+
+########Plot Parameters finish############3
 
 #Reference Values and step values (Most edits should happen here)
 Tref=3000 #K, Reference value for the isentrope. Acts as the foot. It is set here
@@ -183,18 +216,12 @@ def gamma_fit(x,a,b,c,d,e): #fitting function for gamma values
     return 2/3 + (a - 2/3)*(2597/x)**b + c*np.exp((-(x-d)**2)/(e**2))
 
 #Gamma Paramters
-A_mean=0.464372154854
-B_mean=0.645891883744
-C_mean=1.01114044541
-D_mean=5128.97644885
-E_mean=1324.10397093
-           
-Covar=[[  6.01748973e-02,  -5.25514538e-02 ,  8.52968507e-02 , -4.74607187e+01 , -1.36117685e+02],
- [ -5.25514538e-02,   2.12491057e-01,  -9.84335454e-02,   2.23774711e+01 ,  8.49695247e+01],
- [  8.52968507e-02,  -9.84335454e-02,   2.44553745e-01,  -1.68689128e+02,  -1.65557887e+02],
- [ -4.74607187e+01,   2.23774711e+01,  -1.68689128e+02,   3.16948640e+05,   1.05691286e+05],
- [ -1.36117685e+02,   8.49695247e+01,  -1.65557887e+02,   1.05691286e+05,   6.00820780e+05]]
-lmat_G=sp.linalg.cholesky(Covar,lower=False)
+A_mean=0.376568831195
+B_mean=3.69951351528
+C_mean=0.654310523784
+D_mean=4928.94895961
+E_mean=1195.83314527
+        
 
 # Initialize all needed arrays, we need monte carlo arrays, global arrays, and
 # temp arrays for calculations in loops. do temp arrays right before loops inside
@@ -302,13 +329,11 @@ while j < steps:
     cpd=-25.913-25.913*0.02*sp.randn()
     cpe=25.374+25.374*0.02*sp.randn()
     #Gamma Fit stuff
-    temp_mat=sp.randn(1,5)
-    bmat=np.matmul(temp_mat,lmat_G)
-    AG1=A_mean+bmat[0,0]
-    BG1=B_mean+bmat[0,1]
-    CG1=C_mean+bmat[0,2]
-    DG1=D_mean+bmat[0,3]
-    EG1=E_mean+bmat[0,4] 
+    AG1=A_mean
+    BG1=B_mean
+    CG1=C_mean
+    DG1=D_mean
+    EG1=E_mean
     S_stp1=S_stp+.1*sp.randn()
 
     #gruneisen plot
@@ -343,7 +368,7 @@ while j < steps:
 
     #set gruneisen for the array
     gamma_asi[:,j]=gamma_asi2*((rho_init_l/rhoH[:,j])**q_asi2)
-    gamma[:,j]=gamma_fit(rhoH[:,j],AG1,BG1,CG1,DG1,EG1)
+    gamma[:,j]=gamma_fit(rhoH[:,j],AG1,BG1,CG1,DG1,EG1)+(gamma_fit(rhoH[:,j],AG1,BG1,CG1,DG1,EG1)*0.32*sp.randn())
     #gamma[:,j]=gamma_i+q*((rho_gamma/rhoH[:,j])-1)
     #print(gamma)
 #for setting custom gammas that decrease later on
@@ -511,20 +536,20 @@ print('volume ration of gamma part',rho[gamma_ind]/gamma_rho)
 
 
 cross_temp=np.sort(Tcross)
-Tc_up=-cross_temp[int(0.841*steps)]+Tc
-Tc_low=cross_temp[int(0.159*steps)]-Tc
+Tc_up=cross_temp[int(0.841*steps)]-Tc
+Tc_low=-cross_temp[int(0.159*steps)]+Tc
 print("T alt uncert",Tc_up,Tc_low)
 cross_temp=np.sort(Pcross)
-Pc_up=-cross_temp[int(0.841*steps)]+Pc
-Pc_low=cross_temp[int(0.159*steps)]-Pc
+Pc_up=cross_temp[int(0.841*steps)]-Pc
+Pc_low=-cross_temp[int(0.159*steps)]+Pc
 print("P alt uncert",Pc_up,Pc_low)
 cross_temp=np.sort(RhoCross)
-Rhoc_up=-cross_temp[int(0.841*steps)]+Rhoc
-Rhoc_low=cross_temp[int(0.159*steps)]-Rhoc
+Rhoc_up=cross_temp[int(0.841*steps)]-Rhoc
+Rhoc_low=-cross_temp[int(0.159*steps)]+Rhoc
 print("Rho alt uncert",Rhoc_up,Rhoc_low)
 cross_temp=np.sort(Scross)
-Sc_up=-cross_temp[int(0.841*steps)]+Sc
-Sc_low=cross_temp[int(0.159*steps)]-Sc
+Sc_up=cross_temp[int(0.841*steps)]-Sc
+Sc_low=-cross_temp[int(0.159*steps)]+Sc
 print("S alt uncert",Sc_up,Sc_low)
 
 ##plt.figure()
@@ -818,7 +843,7 @@ plt.fill_between(rho[ld:], P[ld:]*(10**(-12))-Pe[ld:]*(10**(-12)),P[ld:]*(10**(-
 #plt.scatter(rho_init_l,Pth[ll[0]]*(10**(-12)), label='Isentrope Foot', color='black')
 #plt.errorbar(rhoH1,PH1*(10**-12),xerr=rhoH1e, yerr=PH1e*(10**-12), fmt='o',linewidth=2, color='black',label='Reference Hugoniot Point')
 plt.errorbar(Rhoc,Pc*(10**-12),yerr=Pce*(10**-12), xerr=Rhoce, fmt='o',linewidth=2, color='red',label='Isentrope-Hugoniot Intersection')
-plt.errorbar(Zrho,ZP,yerr=ZPe, xerr=Zrhoe, fmt='o',linewidth=2, color='black',label='Z Hugoniot Points, Omega Reflectivity')
+#plt.errorbar(Zrho,ZP,yerr=ZPe, xerr=Zrhoe, fmt='o',linewidth=2, color='black',label='Z Hugoniot Points, Omega Reflectivity')
 
 plt.grid()
 #plt.figtext(0.35,0.11,'Shots Z2792, Z2868, Z2879, Z3033', fontsize='xx-small')
@@ -853,6 +878,8 @@ plt.errorbar(Rhoc,Tc/1000,yerr=Tce/1000, xerr=Rhoce, fmt='o',linewidth=2, color=
 #plt.title('Forsterite T - P')
 plt.ylabel('Temperature (1000 K)')
 plt.xlabel('Density (kg/m$^3$)')
+#ylocs, ylabels=plt.yticks()
+#plt.yticks(ylocs[::0])
 #plt.semilogx()
 plt.xlim(2000,8000)
 plt.ylim(0,20)
@@ -867,12 +894,12 @@ CvH=CvH*ma/(R*7)
 CvHe=CvHe*ma/(R*7)
 Cvnum=Cvnum*ma/(R*7)
 Cvnume=Cvnume*ma/(R*7)
-dftCV=dftCV*ma/(R*7)
+#dftCV=dftCV*ma/(R*7)
 #plt.plot(TH[tmp4[0]]*(10**-3),CvH[tmp4[0]],color='blue')
 #plt.fill_between(TH[tmp4[0]]*(10**-3),CvH[tmp4[0]]-CvHe[tmp4[0]],CvH[tmp4[0]]+CvHe[tmp4[0]],label= 'DFT $\gamma$ Slope Method',color='blue',alpha=0.4)
 plt.plot(TH[tmp4[0]]*(10**-3),Cvnum[tmp4[0]],color='green')
 plt.fill_between(TH[tmp4[0]]*(10**-3),Cvnum[tmp4[0]]-Cvnume[tmp4[0]],Cvnum[tmp4[0]]+Cvnume[tmp4[0]],label= 'Linear $\gamma$ Slope Method',color='green',alpha=0.4)
-plt.plot(dftT*(10**-3),dftCV,'o', label='DFT-MD')
+#plt.plot(dftT*(10**-3),dftCV,'o', label='DFT-MD')
 plt.xlabel('Temperature (1000 K)')
 plt.ylabel('Cv/Nk$_B$')#(J/K/kg)')
 plt.ylim(3,7)
@@ -885,7 +912,7 @@ plt.figure()
 plt.rc('grid',color='black', linestyle=':', linewidth=0.5,alpha=0.25)
 plt.plot(rho_gamma/rho,gamma_m,color='blue',label='de Koker et al. 2008')
 plt.fill_between(rho_gamma/rho,gamma_m-gamma_me,gamma_m+gamma_me,color='blue',alpha=0.4)
-plt.plot(rho_gamma/dens_dft[1:],gamma_dft[1:],'o',color='green',label='DFT')
+#plt.plot(rho_gamma/dens_dft[1:],gamma_dft[1:],'o',color='green',label='DFT')
 #plt.plot(rho_gamma/rho,gamma_m_a,color='purple',label='Asimow 2018')
 #plt.fill_between(rho_gamma/rho,gamma_m_a-gamma_me_a,gamma_m_a+gamma_me_a,color='purple',alpha=0.4)
 plt.plot(rho_gamma/5437, 2.1, 'o', color='red', label='Brown et al. 1987')
@@ -1021,7 +1048,7 @@ with open('Z_Hugoniot_us-up.txt','w+') as f:
         f.write(',')
         f.write(str(rho[i]))
         f.write(',')
-        f.write(str(gamma_dft_print[i]))
+        f.write(str(gamma_m[i]))
         f.write(',')
         f.write(str(CvH[i]))
         f.write(',')
