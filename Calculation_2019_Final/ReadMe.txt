@@ -11,23 +11,23 @@ Input - Release_VandP_Data.txt
 Output - Plot PDFs, P_V_E_releasePaths_gau.txt, and Gamma_Release_Data_gau.txt
 Estimated Calc Time - 8 hours
 
-3: Gamma_SwiftKrausMethod.py - Fits existing data with Gammas calculated in script #2. Uses Monte carlo perturbations to fit to the exponential/altschuler function as described in text. Calculated Co-Variance matrix to the parameters. 
+3: GammaFitting_V2.py - Fits existing data with Gammas calculated in script #2. Uses least squares to fit to the exponential/altschuler function as described in text. Calculates a constant percentile error envelope about the best fit line. Also generates statistical data clouds using normal distributions about the uncertainty of each data point and determines the percentage of the points that lie in the error envelope of the best fit line.  
 Input - Gamma_Release_Data_gau.txt
-Output - Plot PDFs and Co-variance matrix plus parameters given in the console.
+Output - Plot PDFs and parameters given in the console.
 Estimated Calc Time - 10 minutes
 
-4: Hugoniot_entropy_V3_releaseGamma.py - Calculates entropy up to the isentrope, the isentrope temperature gradient, the intersections point between the principal Hugoniot and said isentrope, and then entropy on the Hugoniot. Plots generated from this script were not used in the paper. 
+4: Hugoniot_entropy_V3_releaseGamma.py - Calculates entropy up to the isentrope, the isentrope temperature gradient, the intersections point between the principal Hugoniot and said isentrope, and then entropy on the Hugoniot. Plots generated from this script were not used in the paper but the data was.
 Input - Covariance Matrices, fits, and parameters for forsterite Hugoniot (Us-Up), (Us-T), and (gamma-rho).
 Output - Z_Hugoniot.txt, Z_Hugoniot_us-up .txt, Plot PDFs, Isentrope intersection and additional step values are output to the console. 
 Estimated Calc Time - 30 minutes
 
 5: VaporFractions_ImpactVelocity.py and VaporFractions_ImpactVelocity_Hot_forsterite.py - Calculates pressures and impact velocities for specified vapor fractions and complete melting. Monte Carlo for uncertainty analysis.
-Input - Z_Hugoniot.txt, Entropies of melting and vaporization (manually input), and entropy offset for Hot version, also needed is PulledHugoniots/L_VDome_STS_f.csv and forsterite-maneos_py.txt for comparison
+Input - Z_Hugoniot.txt, Entropies of melting and vaporization (manually input), and entropy offset for Hot version, also needed is PulledHugoniots/L_VDome_STS_f.csv and warmForsterite_NewAneos.txt. Warm forsterite should use the warmForsterite_NewAneos.txt instead of a constant entropy offset.
 Output - VaporFractions_Forsterite_298.txt or VaporFractions_Forsterite_1200.txt
 Estimated Calc Time - 15 minutes
 
-6: VaporFractions_ImpactVelocity_quartz.py and VaporFractions_ImpactVelocity_Hot_quartz - As above but for quartz.
-Input - Silica-dome for vapor dome, and entropy offset for warm hot version.
+6: VaporFractions_ImpactVelocity_quartz.py - As above but for quartz.
+Input - Silica-dome for vapor dome, and entropy function for quartz.
 Output - VaporFractions_Quartz_298.txt or VaporFractions_Quartz_1200.txt
 Estimated Calc Time - 15 minutes
 
